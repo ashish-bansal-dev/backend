@@ -9,7 +9,8 @@ export const storeSellerFields = [
   'city',
   'postal_code',
   'country_code',
-  'tax_id'
+  'tax_id',
+  'type'
 ]
 
 export const storeSellerQueryConfig = {

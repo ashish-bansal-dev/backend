@@ -6,6 +6,7 @@ export interface CreateSellerDTO
     'id' | 'created_at' | 'updated_at' | 'members'
   > {
   name: string
+  type?: 'manufacturer' | 'reseller'
 }
 
 export interface UpdateSellerDTO {
@@ -23,6 +24,7 @@ export interface UpdateSellerDTO {
   handle?: string
   photo?: string
   store_status?: StoreStatus
+  type?: 'manufacturer' | 'reseller'
 }
 
 export interface CreateMemberDTO {

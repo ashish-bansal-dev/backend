@@ -23,6 +23,7 @@ export type SellerDTO = {
   tax_id: string | null
   handle: string
   photo: string | null
+  type: 'manufacturer' | 'reseller'
   members?: Partial<MemberDTO>[]
 }
 

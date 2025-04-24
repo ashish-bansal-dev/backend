@@ -10,6 +10,7 @@ export const Seller = model.define('seller', {
   store_status: model.enum(StoreStatus).default(StoreStatus.ACTIVE),
   name: model.text().searchable(),
   handle: model.text().unique(),
+  type: model.enum(['manufacturer', 'reseller']).default('reseller'),
   description: model.text().searchable().nullable(),
   photo: model.text().nullable(),
   email: model.text().nullable(),
