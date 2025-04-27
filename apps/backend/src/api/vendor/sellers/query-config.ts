@@ -9,7 +9,7 @@ export const vendorSellerFields = [
   'city',
   'postal_code',
   'country_code',
-  'tax_id'
+  'gstin'
 ]
 
 export const vendorSellerQueryConfig = {
