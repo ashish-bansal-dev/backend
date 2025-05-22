@@ -28,7 +28,7 @@ import { createSellerWorkflow } from '../../workflows/seller/workflows'
 import { productsToInsert } from './seed-products'
 import {CONFIGURATION_MODULE} from "../../modules/configuration";
 
-const countries = ['be', 'de', 'dk', 'se', 'fr', 'es', 'it', 'pl', 'cz', 'nl']
+const countries = ['in']
 
 export async function createSalesChannel(container: MedusaContainer) {
   const salesChannelModuleService = container.resolve(Modules.SALES_CHANNEL)
@@ -74,7 +74,7 @@ export async function createStore(
       update: {
         supported_currencies: [
           {
-            currency_code: 'eur',
+            currency_code: 'inr',
             is_default: true
           }
         ],
@@ -91,8 +91,8 @@ export async function createRegions(container: MedusaContainer) {
     input: {
       regions: [
         {
-          name: 'Europe',
-          currency_code: 'eur',
+          name: 'India',
+          currency_code: 'inr',
           countries,
           payment_providers: ['pp_system_default']
         }
@@ -213,8 +213,8 @@ export async function createSeller(container: MedusaContainer) {
 
   const { authIdentity } = await authService.register('emailpass', {
     body: {
-      email: 'seller@mercurjs.com',
-      password: 'secret'
+      email: 'seller@gmail.com',
+      password: 'admin'
     }
   })
 
@@ -223,11 +223,11 @@ export async function createSeller(container: MedusaContainer) {
     input: {
       auth_identity_id: authIdentity?.id,
       member: {
-        name: 'John Doe',
-        email: 'seller@mercurjs.com'
+        name: 'Amit Sharma',
+        email: 'seller@gmail.com'
       },
       seller: {
-        name: 'MercurJS Store'
+        name: 'Seller Store'
       }
     }
   })
@@ -249,9 +249,9 @@ export async function createSellerStockLocation(
         {
           name: `Stock Location for seller ${sellerId}`,
           address: {
-            address_1: 'Random Strasse',
-            city: 'Berlin',
-            country_code: 'de'
+            address_1: 'Gandhi Nagar',
+            city: 'Delhi',
+            country_code: 'in'
           }
         }
       ]
@@ -323,7 +323,7 @@ export async function createServiceZoneForFulfillmentSet(
       data: [
         {
           fulfillment_set_id: fulfillmentSetId,
-          name: `Europe`,
+          name: `India`,
           geo_zones: countries.map((c) => ({
             type: 'country',
             country_code: c
@@ -385,15 +385,15 @@ export async function createSellerShippingOption(
         type: {
           label: `${sellerName} shipping`,
           code: sellerName,
-          description: 'Europe shipping'
+          description: 'India shipping'
         },
         rules: [
           { value: 'true', attribute: 'enabled_in_store', operator: 'eq' },
           { attribute: 'is_return', value: 'false', operator: 'eq' }
         ],
         prices: [
-          { currency_code: 'eur', amount: 10 },
-          { amount: 10, region_id: regionId }
+          { currency_code: 'inr', amount: 100 },
+          { amount: 100, region_id: regionId }
         ],
         price_type: 'flat',
         data: { id: 'manual-fulfillment' }
