@@ -21,7 +21,7 @@ export const updateSellerStep = createStep(
 
     const updatedSellers: SellerDTO = await service.updateSellers({
       ...input,
-      ...(newHandle ? { handle: newHandle } : {})
+      ...(!previousData.handle ? { handle: newHandle } : {})
     })
 
     if (input.store_status) {
