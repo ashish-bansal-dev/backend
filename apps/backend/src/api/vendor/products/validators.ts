@@ -250,7 +250,7 @@ export const CreateProductVariant = z
     width: z.number().optional(),
     origin_country: z.string().optional(),
     material: z.string().optional(),
-    metadata: z.record(z.unknown()).optional(),
+    metadata: z.record(z.unknown()).nullish(),
     prices: z.array(CreateVariantPrice),
     options: z.record(z.string()).optional(),
     inventory_items: z

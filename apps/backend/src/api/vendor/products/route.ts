@@ -131,14 +131,30 @@ export const POST = async (
     req.scope
   )
 
+  // Todo set profit percentage based on different sellers
+  const profit = 0.1 // getProfitPercentage(seller.id)
+
   const { brand_name, additional_data, ...validatedBody } = req.validatedBody
+  let data = validatedBody
+  if (validatedBody.variants) {
+    data = {
+      ...validatedBody,
+      variants: validatedBody.variants.map((variant) => ({
+        ...variant,
+        prices: [{
+          currency_code: "inr",
+          amount: parseFloat(variant.metadata?.cost_price as string) + parseFloat(variant.metadata?.cost_price as string) * profit,
+        }]
+      }))
+    }
+  }
 
   const { result } = await createProductRequestWorkflow.run({
     container: req.scope,
     input: {
       seller_id: seller.id,
       data: {
-        data: validatedBody,
+        data: data,
         type: 'product',
         submitter_id: req.auth_context.actor_id
       },
