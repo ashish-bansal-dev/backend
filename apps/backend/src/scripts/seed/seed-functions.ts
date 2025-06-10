@@ -402,11 +402,15 @@ export async function createSeller(container: MedusaContainer) {
     const { result: sellerResult } = await createSellerWorkflow.run({
       container,
       input: {
-        auth_identity_id: authIdentity?.id,
+        seller: {
+          name: seller.name,
+          type: seller.type?.toLowerCase() ?? 'manufacturer',
+        },
         member: {
           name: seller.name,
           email: seller.email
-        }
+        },
+        auth_identity_id: authIdentity!.id
       }
     })
     sellerList.push({
