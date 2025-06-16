@@ -1,5 +1,6 @@
 import { MiddlewareRoute, authenticate } from '@medusajs/framework'
 
+
 import { checkSellerActive } from '../../shared/infra/http/middlewares/check-seller-active'
 import { unlessBaseUrl } from '../../shared/infra/http/utils'
 import { vendorCampaignsMiddlewares } from './campaigns/middlewares'
@@ -35,6 +36,7 @@ import { vendorStatisticsMiddlewares } from './statistics/middlewares'
 import { vendorStockLocationsMiddlewares } from './stock-locations/middlewares'
 import { vendorStoresMiddlewares } from './stores/middlewares'
 import { vendorUploadMiddlewares } from './uploads/middlewares'
+import { vendorVariantIdMiddleware } from './variants/middlewares'
 
 export const vendorMiddlewares: MiddlewareRoute[] = [
   {
@@ -108,5 +110,6 @@ export const vendorMiddlewares: MiddlewareRoute[] = [
   ...vendorFulfillmentProvidersMiddlewares,
   ...vendorReturnsMiddlewares,
   ...vendorShippingProfilesMiddlewares,
-  ...vendorRegionsMiddlewares
+  ...vendorRegionsMiddlewares,
+  ...vendorVariantIdMiddleware,
 ]

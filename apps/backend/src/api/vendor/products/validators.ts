@@ -117,6 +117,12 @@ const CreateVariantPrice = z.object({
   rules: z.record(z.string(), z.string()).optional()
 })
 
+// Actor-specific INR price for vendor
+const VendorActorPrice = z.object({
+  buyer_type: z.enum(["admin", "reseller", "customer"]),
+  price: z.number(),
+})
+
 /**
  * @schema UpdateVariantPrice
  * type: object
@@ -260,7 +266,9 @@ export const CreateProductVariant = z
           required_quantity: z.number()
         })
       )
-      .optional()
+      .optional(),
+    rules: z.record(z.string(), z.string()).optional(),
+    vendor_prices: z.array(VendorActorPrice).optional()
   })
   .strict()
 

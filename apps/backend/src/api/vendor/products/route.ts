@@ -9,6 +9,8 @@ import sellerProductLink from '../../../links/seller-product'
 import { fetchSellerByAuthActorId } from '../../../shared/infra/http/utils'
 import { assignBrandToProductWorkflow } from '../../../workflows/brand/workflows'
 import { createProductRequestWorkflow } from '../../../workflows/requests/workflows'
+import { VENDOR_MODULE } from '../../../modules/vendor'
+import VendorModuleService from '../../../modules/vendor/service'
 import {
   VendorCreateProductType,
   VendorGetProductParamsType
@@ -168,6 +170,42 @@ export const POST = async (
     },
     { throwIfKeyNotFound: true }
   )
+
+  // Fetch variants of this product to map index -> id
+  const { data: variantRows } = await query.graph({
+    entity: 'variant',
+    fields: ['id', 'variant_rank'],
+    filters: { product_id }
+  })
+
+  const variantIdMap: Record<number, string> = {}
+  variantRows.forEach((v: any, idx: number) => {
+    variantIdMap[idx] = v.id
+  })
+
+  const vendorService = req.scope.resolve<VendorModuleService>(VENDOR_MODULE)
+
+  const promises: Promise<any>[] = []
+  validatedBody.variants?.forEach((variant: any, idx: number) => {
+    const variantId = variantIdMap[idx]
+    if (!variantId || !variant.vendor_prices) return
+    variant.vendor_prices.forEach((vp) => {
+      promises.push(
+        vendorService.createVendorPrices([
+          {
+            variant_id: variantId,
+            seller_id: seller.id,
+            buyer_type: vp.buyer_type,
+            price: vp.price,
+          },
+        ])
+      )
+    })
+  })
+
+  if (promises.length) {
+    await Promise.allSettled(promises)
+  }
 
   res.status(201).json({ product })
 }
